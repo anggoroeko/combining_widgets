@@ -26,15 +26,17 @@ class MyApp extends StatelessWidget {
               titleLarge: TextStyle(
                   fontFamily: 'OpenSans',
                   fontWeight: FontWeight.bold,
-                  fontSize: 18)),
+                  fontSize: 18),
+              labelLarge: TextStyle(color: Colors.white)),
           appBarTheme: AppBarTheme(
               titleTextStyle: ThemeData.light()
                   .textTheme
                   .copyWith(
-                      titleLarge: TextStyle(
-                          fontFamily: 'OpenSans',
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold))
+                    titleLarge: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  )
                   .titleLarge)),
       home: MyHomePage(),
     );

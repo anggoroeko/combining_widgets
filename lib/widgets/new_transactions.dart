@@ -56,12 +56,31 @@ class _NewTransactionState extends State<NewTransaction> {
               onSubmitted: (_) =>
                   submitData(), //::FOR HAVING TO SEND IT, BUT IT WAS MADE ANONYMOUS
             ),
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Text('No Date Chosen!'),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Choose Date',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    style: TextButton.styleFrom(
+                        foregroundColor: Theme.of(context).primaryColor),
+                  )
+                ],
+              ),
+            ),
             ElevatedButton(
-              onPressed: submitData,
-              child: Text('Add Transactions'),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, foregroundColor: Colors.white),
-            )
+                onPressed: submitData,
+                child: Text('Add Transactions'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor:
+                      Theme.of(context).textTheme.labelLarge?.color,
+                ))
           ],
         ),
       ),
