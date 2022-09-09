@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   // const NewTransaction({super.key});
@@ -12,15 +13,17 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final titleController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
 
-  final amountController = TextEditingController();
+  void _submitData() {
+    final enteredTitle = _titleController.text;
+    final enteredAmount = _amountController.text;
 
-  void submitData() {
-    final enteredTitle = titleController.text;
-    final enteredAmount = amountController.text;
-
-    if (enteredTitle.isEmpty || enteredAmount.isEmpty) {
+    if (enteredTitle.isEmpty ||
+        enteredAmount.isEmpty ||
+        _selectedDate == null) {
       return;
     }
 
@@ -30,8 +33,25 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
-    widget.addTx(enteredTitle, enteredAmountInt);
+    widget.addTx(enteredTitle, enteredAmountInt, _selectedDate);
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2019),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -45,24 +65,30 @@ class _NewTransactionState extends State<NewTransaction> {
           children: [
             TextField(
               decoration: InputDecoration(labelText: 'Title'),
-              controller: titleController,
+              controller: _titleController,
               onSubmitted: (_) =>
-                  submitData(), //::FOR HAVING TO SEND IT, BUT IT WAS MADE ANONYMOUS
+                  _submitData(), //::FOR HAVING TO SEND IT, BUT IT WAS MADE ANONYMOUS
             ),
             TextField(
               decoration: InputDecoration(labelText: 'Amount'),
-              controller: amountController,
+              controller: _amountController,
               keyboardType: TextInputType.number,
               onSubmitted: (_) =>
-                  submitData(), //::FOR HAVING TO SEND IT, BUT IT WAS MADE ANONYMOUS
+                  _submitData(), //::FOR HAVING TO SEND IT, BUT IT WAS MADE ANONYMOUS
             ),
             Container(
               height: 70,
               child: Row(
                 children: [
-                  Text('No Date Chosen!'),
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null
+                          ? 'No Date Chosen!'
+                          : 'Picked Date : ${DateFormat.yMd().format(_selectedDate)}',
+                    ),
+                  ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: _presentDatePicker,
                     child: Text(
                       'Choose Date',
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -74,7 +100,7 @@ class _NewTransactionState extends State<NewTransaction> {
               ),
             ),
             ElevatedButton(
-                onPressed: submitData,
+                onPressed: _submitData,
                 child: Text('Add Transactions'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
