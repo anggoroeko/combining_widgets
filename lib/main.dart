@@ -19,25 +19,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal Expenses',
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-              .copyWith(secondary: Colors.amber),
-          fontFamily: 'QuickSand',
+          colorScheme: ColorScheme.fromSwatch(
+                  primarySwatch: Colors.blue, errorColor: Colors.red)
+              .copyWith(secondary: Colors.blue),
+          fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
               titleLarge: TextStyle(
                   fontFamily: 'OpenSans',
                   fontWeight: FontWeight.bold,
                   fontSize: 18),
-              labelLarge: TextStyle(color: Colors.white)),
-          appBarTheme: AppBarTheme(
-              titleTextStyle: ThemeData.light()
-                  .textTheme
-                  .copyWith(
-                    titleLarge: TextStyle(
-                        fontFamily: 'OpenSans',
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  )
-                  .titleLarge)),
+              labelLarge: TextStyle(color: Colors.white))),
       home: MyHomePage(),
     );
   }
@@ -84,6 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((tx) => tx.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTransactions),
-            TransactionList(_userTransactions)
+            TransactionList(_userTransactions, _deleteTransaction)
           ],
         ),
       ),
