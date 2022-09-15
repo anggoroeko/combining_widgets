@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:combining_widgets/widgets/adaptive_flat_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -59,7 +63,8 @@ class _NewTransactionState extends State<NewTransaction> {
               top: 10,
               left: 10,
               bottom: 200,
-              right: MediaQuery.of(context).viewInsets.bottom + 10),
+              // right: MediaQuery.of(context).viewInsets.bottom + 10
+              right: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -87,15 +92,7 @@ class _NewTransactionState extends State<NewTransaction> {
                             : 'Picked Date : ${DateFormat.yMd().format(_selectedDate!)}',
                       ),
                     ),
-                    TextButton(
-                      onPressed: _presentDatePicker,
-                      child: Text(
-                        'Choose Date',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      style: TextButton.styleFrom(
-                          foregroundColor: Theme.of(context).primaryColor),
-                    )
+                    AdaptiveFlatButton('Choose Date', _presentDatePicker)
                   ],
                 ),
               ),
